@@ -10,7 +10,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Options from './Options';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Modal, Button } from '@material-ui/core';
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 100 },
@@ -42,12 +43,78 @@ const useStyles = makeStyles({
 
 export default function CountriesAPI() {
 
+    const [page, setPage] =useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [ima,setIma] = useState('')
     const [countries,setCountries] = useState([])
+    const [modalInfo,setModalInfo] = useState('')
+    const [showModal,setShowModal] = useState(false)
+    const [show,setShow] = useState(false)
+    const classes = useStyles();
+  
+     
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
+
+    const handleClose = () =>{
+      setShow(false)
+    }
+
+    const handleShow = () =>{
+      setShow(true)
+    }
+
+    const toggleTrueFalse = () =>{
+      setShowModal(handleShow)
+    }
+
+    async function getData() {
+
+      let response = await axios.get('https://restcountries.eu/rest/v2');
+      let user = await response.data
+      return user;
+}
+
+
+
+const rowsEvent = (event) => {
+console.log(event.target.innerText)
+let da  = event.target.innerText
+setModalInfo(da)
+toggleTrueFalse()
+
+}
+
+    const ModalContent = () =>{
+      return (
+        <div>
+        <Modal onHide={handleClose} open={show}>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Daniel
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              asdslkdaslkj
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose} >Close</Button>
+            </Modal.Footer>
+        </Modal>
+        </div>
+      )
+    }
 
 useEffect(() => {
         axios.get('https://restcountries.eu/rest/v2').then(
             response => {
-                setCountries(response.data)
+               setCountries(response.data)
             } 
         ).catch(error =>{ 
             console.log(error)
@@ -66,33 +133,13 @@ dados.then(function(dados){
 
  })
 
-async function getData() {
-
-        let response = await axios.get('https://restcountries.eu/rest/v2');
-        let user = await response.data
-        return user;
-      }
-  
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-   
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-
 
 if(rows.length < 1 ){
 return(
     <div>
-        
-        <h2>Looding... </h2>
+        <div className={classes.root}>
+      <CircularProgress disableShrink />
+    </div>
     </div>
 )
 }else{
@@ -102,11 +149,11 @@ return(
           <div className={classes.section4} ><Options mockdata={rows} ></Options></div>
           <h2></h2>
         </div>
-    <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
+    <Paper className={classes.root} >
+      <TableContainer className={classes.container}  >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow >
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -121,11 +168,13 @@ return(
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                <TableRow hover   role="checkbox" tabIndex={-1} key={row.id} >
                   {columns.map((column) => {
                     const value = row[column.id];
+                    if(column.id === "flag"){
+                    }
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell onClick={rowsEvent} key={column.id} align={column.align}>
                         {column.format && typeof value === 'number' ? column.format(value) : 
                         value }
                       </TableCell>
@@ -147,6 +196,7 @@ return(
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </Paper>
+    {show ? <ModalContent></ModalContent> : null}
     </div>
   )
  
