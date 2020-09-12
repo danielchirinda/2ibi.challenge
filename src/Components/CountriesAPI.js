@@ -71,14 +71,14 @@ export default function CountriesAPI() {
   const rowsEvent = (event) => {
     let currentImage = event.target.innerText
     if(oldEvent != ''){
-      oldEvent.style.color = 'black'
-      oldEvent.style.background = 'white'
+      oldEvent.parentNode.style.color = 'black'
+      oldEvent.parentNode.style.background = 'white'
     }
     const reg = /.svg/
     if(currentImage.match(reg)){
       setOldEvent(event.target)
       //event.target.style.color = 'red'
-      event.target.style.background = 'lightblue'
+      event.target.parentNode.style.background = 'lightblue'
       showImage(currentImage)
     }
 
