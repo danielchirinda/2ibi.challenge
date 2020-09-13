@@ -46,14 +46,14 @@ export default function MiddleDividers() {
           </Grid>
         </Grid>
         <Typography color="textSecondary" variant="body2">
-          Please choose type that you want to convert
+        Por favor, escolha o tipo que deseja converter
         </Typography>
       </div>
       <Divider variant="middle" />
       <div className={classes.section2}>
-        <Typography gutterBottom variant="body1">
-          Select type to Download
-        </Typography>
+            <div>
+              <img id="imaToChange" width="100" height="50" src="https://restcountries.eu/data/afg.svg"></img>
+            </div>
       </div>
      <CountriesAPI></CountriesAPI>
     </div>

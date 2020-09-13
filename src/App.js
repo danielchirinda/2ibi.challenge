@@ -4,14 +4,14 @@ import './App.css';
 import CountriesAPI from './Components/CountriesAPI';
 import MiddleDividers from './Components/Intro';
 import Options from './Components/Options';
-import Convert from './Components/Convert';
 
 function App() {
   return (
-    <div className="App">     
+    <div className="App">
 
-    <MiddleDividers>
-    </MiddleDividers>
+
+      <MiddleDividers>
+      </MiddleDividers>
 
     </div>
   );
