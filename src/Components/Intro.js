@@ -1,11 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import Options from './Options';
 import CountriesAPI from './CountriesAPI';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,9 +10,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     maxWidth: '100%',
     backgroundColor: theme.palette.background.paper,
-  },
-  chip: {
-    margin: theme.spacing(0.5),
   },
   section1: {
     margin: theme.spacing(3, 2),
@@ -52,7 +46,7 @@ export default function MiddleDividers() {
       <Divider variant="middle" />
       <div className={classes.section2}>
             <div>
-              <img id="imaToChange" width="100" height="50" src="https://restcountries.eu/data/afg.svg"></img>
+              <img id="imaToChange" width="100" height="50" src="" alt="Selecione o link"></img>
             </div>
       </div>
      <CountriesAPI></CountriesAPI>

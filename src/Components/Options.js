@@ -1,36 +1,16 @@
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import CsvDownload from 'react-json-to-csv'
 import exportFromJSON from 'export-from-json'
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
-import KeyboardVoiceIcon from '@material-ui/icons/KeyboardVoice';
 
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
 }));
-
-const GreenCheckbox = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600],
-    },
-  },
-  checked: {},
-})((props) => <Checkbox color="default" {...props} />);
 
 export default function Options(props) {
 
@@ -73,7 +53,7 @@ export default function Options(props) {
           startIcon={<ImportExportIcon />}
           onClick={downloadXLS}
         >
-          Download no Formarto XLS
+          Exportar no Formarto XLS
       </Button>
 
         <Button
@@ -83,7 +63,7 @@ export default function Options(props) {
           startIcon={<ImportExportIcon />}
           onClick={downloadCSV}
         >
-          Download no Formarto CSV
+          Exportar no Formarto CSV
       </Button>
 
         <Button
@@ -93,7 +73,7 @@ export default function Options(props) {
           startIcon={<ImportExportIcon />}
           onClick={downloadXML}
         >
-          Download no Formarto XML
+          Exportar no Formarto XML
       </Button>
 
       </div>

@@ -11,7 +11,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Options from './Options';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Modal, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -47,10 +46,10 @@ export default function CountriesAPI() {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [ima, setIma] = useState('')
   const [countries, setCountries] = useState([])
   const classes = useStyles();
-  const [oldEvent,setOldEvent] = useState('')
+  const [oldEvent, setOldEvent] = useState('')
+  const [connection, setConnection] = useState(false)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -68,28 +67,41 @@ export default function CountriesAPI() {
     return user;
   }
 
+  setTimeout(function name(params) {
+    if(rows.length < 1){
+      document.getElementById('circule').innerHTML = `<Typography color="textSecondary" variant="body2">
+      Error Loading Data From the API
+    </Typography>`
+
+    }
+    
+  } , 20000)
+
   const rowsEvent = (event) => {
     let currentImage = event.target.innerText
-    if(oldEvent != ''){
+    console.log(event.target.parentNode)
+
+    
+    if (oldEvent != '') {
       oldEvent.parentNode.style.color = 'black'
       oldEvent.parentNode.style.background = 'white'
     }
     const reg = /.svg/
-    if(currentImage.match(reg)){
+    if (currentImage.match(reg)) {
       setOldEvent(event.target)
-      //event.target.style.color = 'red'
       event.target.parentNode.style.background = 'lightblue'
       showImage(currentImage)
     }
 
   }
   const showImage = (currentImage) => {
-    var daniel =document.getElementById('imaToChange').src = currentImage; 
+    var daniel = document.getElementById('imaToChange').src = currentImage;
   }
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2').then(
       response => {
         setCountries(response.data)
+        setConnection(true)
       }
     ).catch(error => {
       console.log(error)
@@ -110,73 +122,76 @@ export default function CountriesAPI() {
 
 
   if (rows.length < 1) {
+  
     return (
       <div>
-        <div className={classes.root}>
+        <div className={classes.root} id="circule">
           <CircularProgress disableShrink />
+  
         </div>
       </div>
     )
-  } else {
-    return (
+  
+} else {
+  return (
+    <div>
       <div>
-        <div>
-          <div className={classes.section4} ><Options mockdata={rows} ></Options></div>
-          <h5 color="textSecondary" variant="body2"></h5>
+        <div className={classes.section4} ><Options mockdata={rows} ></Options></div>
+        <h5 color="textSecondary" variant="body2"></h5>
 
-          <Typography color="textSecondary" variant="body2">
+        <Typography color="textSecondary" variant="body2">
           Por Favor, clica no link da Bandeira para Poder Visualiza-la
         </Typography>
-        </div>
-        <Paper className={classes.root} >
-          <TableContainer className={classes.container}  >
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow >
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id} >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        if (column.id === "flag") {
-                        }
-                        return (
-                          <TableCell onClick={rowsEvent}  key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number' ? column.format(value) :
-                              value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Paper>
       </div>
-    )
+      <Paper className={classes.root} >
+        <TableContainer className={classes.container}  >
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow >
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id} >
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      if (column.id === "flag") {
+                      }
+                      return (
+                        <TableCell onClick={rowsEvent} key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number' ? column.format(value) :
+                            value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </div>
+  )
 
-  }
+}
 }
